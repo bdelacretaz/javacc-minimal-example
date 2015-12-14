@@ -1,0 +1,74 @@
+/* JavaCC grammar for a minimal calculator example
+ * Loosely based on the example at  
+   http://www.javaworld.com/article/2076269/learn-java/build-your-own-languages-with-javacc.html
+ */
+ 
+options
+{
+    LOOKAHEAD=2;
+}
+PARSER_BEGIN(Calculator)
+
+package ch.x42.javacc.samples.calculator;
+
+import java.io.StringReader;
+
+public class Calculator
+{
+}
+
+PARSER_END(Calculator)
+
+SKIP :
+{
+    " "
+|   "\r"
+|   "\t"
+}
+
+TOKEN:
+{
+    < NUMBER: (<DIGIT>)+ ( "." (<DIGIT>)+ )? >
+|   < DIGIT: ["0"-"9"] >
+|   < EOL: "\n" >
+}
+
+int parseOneLine():
+{
+    int a;
+}
+{
+    a=expr() <EOL>      { return a; }
+  | <EOL>               { return 0; }
+  | <EOF>               { return 0; }
+}
+int expr():
+{
+    int a;
+    int b;
+}
+{
+    a=unary()
+    (
+        "+" b=expr()    { a += b; }
+    |   "-" b=expr()    { a -= b; }
+    )*
+                        { return a; }
+}
+int unary():
+{
+    int a;
+}
+{
+    "-" a=element()     { return -a; }
+|   a=element()         { return a; }
+}
+int element():
+{
+    Token t;
+    int  a;
+}
+{
+    t=<NUMBER>          { return Integer.valueOf(t.toString()); }
+|   "(" a=expr() ")"    { return a; }
+}
