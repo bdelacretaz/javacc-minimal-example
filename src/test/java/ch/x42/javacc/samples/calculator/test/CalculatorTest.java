@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import ch.x42.javacc.samples.calculator.Calculator;
 import ch.x42.javacc.samples.calculator.ParseException;
+import ch.x42.javacc.samples.calculator.TokenMgrError;
 
 public class CalculatorTest {
     private void assertResult(String input, int expected) throws ParseException, IOException {
@@ -39,5 +40,15 @@ public class CalculatorTest {
     @Test
     public void empty() throws ParseException, IOException {
         assertResult("", 0);
+    }
+    
+    @Test(expected=TokenMgrError.class)
+    public void invalidToken() throws ParseException, IOException {
+        assertResult("caneva12pas", -37);
+    }
+    
+    @Test(expected=ParseException.class)
+    public void invalidSyntax() throws ParseException, IOException {
+        assertResult("11 41", -37);
     }
 }
