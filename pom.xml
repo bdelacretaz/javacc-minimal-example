@@ -19,7 +19,6 @@
           <execution>
             <id>calculator</id>
             <configuration>
-              <isStatic>false</isStatic>
               <sourceDirectory>${basedir}/src/main/javacc</sourceDirectory>
             </configuration>
             <goals>
